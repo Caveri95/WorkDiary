@@ -29,7 +29,7 @@ public enum TimeTypeTask {
     ONETIME{
         @Override
         public Task newTask() {
-            return new  Daily();
+            return new OneTime();
         }
     };
 

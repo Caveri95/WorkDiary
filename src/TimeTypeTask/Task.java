@@ -3,6 +3,7 @@ package TimeTypeTask;
 import TimeTypeTask.TimeTypeTask;
 import Utilities.DiaryUtility;
 import Utilities.ScannerUtility;
+import Utilities.TaskNotFoundException;
 import WorkDiary.TaskType;
 
 import java.time.LocalDate;
@@ -81,7 +82,6 @@ public abstract class Task {
         return idGenerator;
     }
 
-    //public abstract void takeData();
     public void takeData(TimeTypeTask type) {
         title = ScannerUtility.askString("Заголовок");
         title = ScannerUtility.askString("Заголовок");

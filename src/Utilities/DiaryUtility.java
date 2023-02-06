@@ -11,10 +11,11 @@ public class DiaryUtility {
     HashMap<Integer, Task> tasks = new HashMap<>();
     ArrayList<Task> deleteTasks = new ArrayList<>();
 
-    public void createTask(/*TimeTypeTask timeTypeTask*/) {
+    public void createTask() {
 
         int a = ScannerUtility.askInt("Выберите периодичность выполнения задачи\n 1 - на один раз\n " +
                 "2 - ежедневная\n 3 - еженедельная\n 4 - ежемесячная\n 5 - ежегодная");
+
         switch (a) {
             case 1:
                 TimeTypeTask type1 = TimeTypeTask.ONETIME;
@@ -63,7 +64,7 @@ public class DiaryUtility {
         switch (a) {
             case 1:
                 if (tasks.size() == 0) {
-                    System.out.println("Список активных задач пуст!");
+                    System.out.println("****Список активных задач пуст!\n");
                 } else {
                     System.out.println("**** Список активных задач");
                     for (Map.Entry<Integer, Task> value : tasks.entrySet()) {
@@ -99,19 +100,21 @@ public class DiaryUtility {
         }
     }
 
-    public void getTasksOnDate() {
+    public void getTasksOnDate() throws TaskNotFoundException {
         LocalDate localDate = inputDate();
         if (tasks.size() == 0) {
             System.out.println("В списке ничего нет");
         }
-        for (Map.Entry<Integer, Task> value : tasks.entrySet()) {
-            LocalDate taskDate = value.getValue().getDate();
-            if (tasks.size() == 0) {
-                System.out.println("На эту дату запланированных задач нет");
+        try {
+            for (Map.Entry<Integer, Task> value : tasks.entrySet()) {
+                LocalDate taskDate = value.getValue().getDate();
+
+                if (!taskDate.equals(localDate) || !value.getValue().appearsIn(localDate, taskDate)) {
+                    throw new TaskNotFoundException("Задач на эту дату нет!");
+                } else System.out.println(value);
             }
-            if (taskDate.equals(localDate) || value.getValue().appearsIn(localDate, taskDate)) {
-                System.out.println(value);
-            }
+        } catch (Exception e) {
+            throw new TaskNotFoundException(e.getMessage());
         }
     }
 
@@ -126,15 +129,20 @@ public class DiaryUtility {
         return LocalDate.of(c, b, a);
     }
 
-    public void deleteTask(int id) {
-        Task task = tasks.get(id);
-        deleteTasks.add(task);
-        if (task != null) {
+    public void deleteTask(int id) throws TaskNotFoundException {
+        try {
+            if (!tasks.containsKey(id)) {
+                throw new TaskNotFoundException("!!! в списке нет задачи под номером " + id + ", попробуйте еще раз!!!\n");
+            }
+            Task task = tasks.get(id);
+            deleteTasks.add(task);
             System.out.println("Задача " + task + " перемещена в список удаленных");
             tasks.remove(id);
-        } else {
-            System.out.println("Такой задачи не существует!\n");
+        } catch (TaskNotFoundException e) {
+            System.out.println(e.getMessage());
         }
+
+
     }
 
     public void getNextTimeRun(int id) {

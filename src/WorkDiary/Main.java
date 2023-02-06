@@ -1,19 +1,21 @@
 package WorkDiary;
 
+import TimeTypeTask.Task;
 import Utilities.DiaryUtility;
 import Utilities.ScannerUtility;
+import Utilities.TaskNotFoundException;
+
 public class Main {
 
     private static DiaryUtility diaryUtility = new DiaryUtility();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws TaskNotFoundException {
 
         boolean run = true;
 
         while (run) {
             helper();
 
-            if (ScannerUtility.scanner.hasNext()) {
                 String cmd = ScannerUtility.askString("Введите команду, для вызова меню помощи введите <<help>> ");
                 if ("123456789".contains(cmd) || cmd.equals("help")) {
                     switch (cmd) {
@@ -45,7 +47,7 @@ public class Main {
                 } else {
                     System.out.println("Введена неккоректная команда");
                 }
-            }
+
         }
     }
     private static void createTask() {
@@ -60,7 +62,7 @@ public class Main {
         diaryUtility.getNextTimeRun(id);
     }
 
-    private static void getTasksOnDate() {
+    private static void getTasksOnDate() throws TaskNotFoundException {
         System.out.println("Получить задачи на следующую дату");
         diaryUtility.getTasksOnDate();
     }
@@ -75,7 +77,7 @@ public class Main {
                 "6 - выйти из ежедневника");
     }
 
-    private static void delete() {
+    private static void delete() throws TaskNotFoundException {
         int id = ScannerUtility.askInt("Введите номер задачи, которую нужно удалить");
         diaryUtility.deleteTask(id);
     }
