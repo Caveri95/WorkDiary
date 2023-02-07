@@ -8,7 +8,6 @@ public class Yearly extends Task{
         return inputDate.getDayOfMonth() == taskDate.getDayOfMonth() &&
                 inputDate.getMonth() == taskDate.getMonth();
     }
-
     @Override
     public void SetNextTime(LocalDate localDate) {
         System.out.println("Следующая дата выполнения задачи: " + localDate.plusYears(1) + "\n");

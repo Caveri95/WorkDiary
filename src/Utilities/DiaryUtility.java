@@ -6,16 +6,17 @@ import WorkDiary.TaskType;
 import java.time.LocalDate;
 import java.util.*;
 
+import static Utilities.ScannerUtility.DATE_FORMATTER;
+import static Utilities.ScannerUtility.DATE_FORMAT;
+
 public class DiaryUtility {
 
     HashMap<Integer, Task> tasks = new HashMap<>();
     ArrayList<Task> deleteTasks = new ArrayList<>();
 
-    public void createTask() {
-
+    public void createTask(){
         int a = ScannerUtility.askInt("Выберите периодичность выполнения задачи\n 1 - на один раз\n " +
                 "2 - ежедневная\n 3 - еженедельная\n 4 - ежемесячная\n 5 - ежегодная");
-
         switch (a) {
             case 1:
                 TimeTypeTask type1 = TimeTypeTask.ONETIME;
@@ -54,9 +55,7 @@ public class DiaryUtility {
                 break;
             default:
                 System.out.println("Нет задачи такого типа!");
-
         }
-
     }
 
     public void tasksList() {
@@ -68,7 +67,7 @@ public class DiaryUtility {
                 } else {
                     System.out.println("**** Список активных задач");
                     for (Map.Entry<Integer, Task> value : tasks.entrySet()) {
-                        System.out.println("Номер задачи - " + value.getKey() + ", " + value.getValue());
+                        System.out.println(value.getKey() + ", " + value.getValue());
                     }
                     System.out.println("\n");
                 }
@@ -77,7 +76,7 @@ public class DiaryUtility {
                 System.out.println("**** Список рабочих задач");
                 for (Map.Entry<Integer, Task> value : tasks.entrySet()) {
                     if (value.getValue().getTaskType() == TaskType.WORK) {
-                        System.out.println("Номер задачи - " + value.getKey() + ", " + value.getValue());
+                        System.out.println(value.getKey() + ", " + value.getValue());
                     }
                     System.out.println("\n");
                 }
@@ -86,8 +85,9 @@ public class DiaryUtility {
                 System.out.println("**** Список личных задач");
                 for (Map.Entry<Integer, Task> value : tasks.entrySet()) {
                     if (value.getValue().getTaskType() == TaskType.PERSONAL) {
-                        System.out.println("Номер задачи - " + value.getKey() + ", " + value.getValue());
+                        System.out.println(value.getKey() + ", " + value.getValue());
                     }
+                    System.out.println("\n");
                 }
                 break;
             case 4:
@@ -100,40 +100,31 @@ public class DiaryUtility {
         }
     }
 
-    public void getTasksOnDate() throws TaskNotFoundException {
+    public void getTasksOnDate() {
+        System.out.println("Получить задачи на следующую дату");
         LocalDate localDate = inputDate();
         if (tasks.size() == 0) {
             System.out.println("В списке ничего нет");
         }
-        try {
-            for (Map.Entry<Integer, Task> value : tasks.entrySet()) {
-                LocalDate taskDate = value.getValue().getDate();
-
-                if (!taskDate.equals(localDate) || !value.getValue().appearsIn(localDate, taskDate)) {
-                    throw new TaskNotFoundException("Задач на эту дату нет!");
-                } else System.out.println(value);
+        for (Map.Entry<Integer, Task> value : tasks.entrySet()) {
+            LocalDate taskDate = value.getValue().getDate();
+            if (taskDate.equals(localDate) || value.getValue().appearsIn(localDate, taskDate)) {
+                System.out.println(value);
             }
-        } catch (Exception e) {
-            throw new TaskNotFoundException(e.getMessage());
         }
     }
 
     public LocalDate inputDate() {
         Scanner scanner1 = new Scanner(System.in);
-        System.out.println("Узнать задачи на следующую дату\n Введите день");
-        int a = scanner1.nextInt();
-        System.out.println("Введите месяц");
-        int b = scanner1.nextInt();
-        System.out.println("Введите год");
-        int c = scanner1.nextInt();
-        return LocalDate.of(c, b, a);
+        System.out.println(DATE_FORMAT);
+        var date = scanner1.next();
+        return LocalDate.parse(date, DATE_FORMATTER);
     }
 
-    public void deleteTask(int id) throws TaskNotFoundException {
+    public void deleteTask(){
         try {
-            if (!tasks.containsKey(id)) {
-                throw new TaskNotFoundException("!!! в списке нет задачи под номером " + id + ", попробуйте еще раз!!!\n");
-            }
+            int id = ScannerUtility.askInt("Введите номер задачи, которую нужно удалить");
+            checkTaskId(id);
             Task task = tasks.get(id);
             deleteTasks.add(task);
             System.out.println("Задача " + task + " перемещена в список удаленных");
@@ -141,14 +132,39 @@ public class DiaryUtility {
         } catch (TaskNotFoundException e) {
             System.out.println(e.getMessage());
         }
-
-
     }
 
-    public void getNextTimeRun(int id) {
-        Task task = tasks.get(id);
-        task.SetNextTime(task.getDate());
+    public void helper() {
+        System.out.println("Список доступных комманд:\n " +
+                "0 - список комманд\n " +
+                "1 - создать новую задачу\n " +
+                "2 - получить список имеющихся или удаленных задач\n " +
+                "3 - удалить задачу\n " +
+                "4 - получить задачу на заданный день\n " +
+                "5 - получить следующий раз выполнение задачи\n " +
+                "6 - выйти из ежедневника");
+    }
 
+    public void getNextTimeRun() throws TaskNotFoundException {
+        try {
+            int id = ScannerUtility.askInt("Введите номер задачи, чтобы посмотреть следующее ее выполнение");
+            checkTaskId(id);
+            Task task = tasks.get(id);
+            task.SetNextTime(task.getDate());
+        } catch (TaskNotFoundException e) {
+            System.out.println(e.getMessage());;
+        }
+    }
 
+    public static void cheсkData(LocalDate localDate) throws IncorrectDateException {
+        if (localDate.isBefore(LocalDate.now())) {
+            throw new IncorrectDateException("Введена неактуальная дата. Задаче будет присвоена текущая дата!");
+        }
+    }
+
+    public  void checkTaskId(int id) throws TaskNotFoundException {
+        if (!tasks.containsKey(id)) {
+            throw new TaskNotFoundException("!!! в списке нет задачи под номером - " + id + ", попробуйте еще раз!!!\n");
+        }
     }
 }

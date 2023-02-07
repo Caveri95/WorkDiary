@@ -1,84 +1,49 @@
 package WorkDiary;
 
-import TimeTypeTask.Task;
 import Utilities.DiaryUtility;
 import Utilities.ScannerUtility;
 import Utilities.TaskNotFoundException;
 
 public class Main {
 
-    private static DiaryUtility diaryUtility = new DiaryUtility();
+    private static  DiaryUtility diaryUtility = new DiaryUtility();
 
     public static void main(String[] args) throws TaskNotFoundException {
 
-        boolean run = true;
+        lable:
+        while (true) {
+            diaryUtility.helper();
+            if (ScannerUtility.scanner.hasNextInt()) {
+                int cmd = ScannerUtility.askInt("Выберите нужный пункт");
 
-        while (run) {
-            helper();
-
-                String cmd = ScannerUtility.askString("Введите команду, для вызова меню помощи введите <<help>> ");
-                if ("123456789".contains(cmd) || cmd.equals("help")) {
-                    switch (cmd) {
-                        case "help":
-                            helper();
-                            break;
-                        case "1":
-                            createTask();
-                            break;
-                        case "2":
-                            tasksList();
-                            break;
-                        case "3":
-                            delete();
-                            break;
-                        case "4":
-                            getTasksOnDate();
-                            break;
-                        case "5":
-                            getNextTimeRun();
-                            break;
-                        case "6":
-                            System.out.println("Удачи!");
-                            run = false;
-                            break;
-                        default:
-                            System.out.println("Нет такой команды!");
-                    }
-                } else {
-                    System.out.println("Введена неккоректная команда");
+                switch (cmd) {
+                    case 0:
+                        diaryUtility.helper();
+                        break;
+                    case 1:
+                        diaryUtility.createTask();
+                        break;
+                    case 2:
+                        diaryUtility.tasksList();
+                        break;
+                    case 3:
+                        diaryUtility.deleteTask();
+                        break;
+                    case 4:
+                        diaryUtility.getTasksOnDate();
+                        break;
+                    case 5:
+                        diaryUtility.getNextTimeRun();
+                        break;
+                    case 6:
+                        break lable;
+                    default:
+                        System.out.println("Неизвестная команда!");
                 }
-
-        }
-    }
-    private static void createTask() {
-        diaryUtility.createTask();
-    }
-
-    private static void tasksList() {
-        diaryUtility.tasksList();
-    }
-    private static void getNextTimeRun() {
-        int id = ScannerUtility.askInt("Введите номер задачи, чтобы посмотреть следующее ее выполнение");
-        diaryUtility.getNextTimeRun(id);
-    }
-
-    private static void getTasksOnDate() throws TaskNotFoundException {
-        System.out.println("Получить задачи на следующую дату");
-        diaryUtility.getTasksOnDate();
-    }
-
-    private static void helper() {
-        System.out.println("Список доступных комманд:\n " +
-                "1 - создать новую задачу\n " +
-                "2 - получить список имеющихся или удаленных задач\n " +
-                "3 - удалить задачу\n " +
-                "4 - получить задачу на заданный день\n " +
-                "5 - получить следующий раз выполнение задачи\n " +
-                "6 - выйти из ежедневника");
-    }
-
-    private static void delete() throws TaskNotFoundException {
-        int id = ScannerUtility.askInt("Введите номер задачи, которую нужно удалить");
-        diaryUtility.deleteTask(id);
+            } else {
+                ScannerUtility.scanner.next();
+                System.out.println("Выберите пункт из меню");
+            }
+        } System.out.println("Удачи!");
     }
 }

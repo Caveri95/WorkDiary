@@ -6,7 +6,6 @@ public enum TimeTypeTask {
         public Task newTask() {
             return new Weekly();
         }
-
     },
     MONTHLY{
         @Override
@@ -32,6 +31,5 @@ public enum TimeTypeTask {
             return new OneTime();
         }
     };
-
     public abstract Task newTask();
 }

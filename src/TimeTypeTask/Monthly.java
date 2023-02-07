@@ -10,6 +10,4 @@ public class Monthly extends Task{
     public void SetNextTime(LocalDate localDate) {
         System.out.println("Следующая дата выполнения задачи: " + localDate.plusMonths(1) + "\n");
     }
-
-
 }

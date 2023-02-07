@@ -9,6 +9,5 @@ public class Weekly extends Task {
     @Override
     public void SetNextTime(LocalDate localDate) {
         System.out.println("Следующая дата выполнения задачи: " + localDate.plusWeeks(1) + "\n");
-
     }
 }

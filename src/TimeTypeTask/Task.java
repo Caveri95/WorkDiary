@@ -1,9 +1,8 @@
 package TimeTypeTask;
 
-import TimeTypeTask.TimeTypeTask;
 import Utilities.DiaryUtility;
+import Utilities.IncorrectDateException;
 import Utilities.ScannerUtility;
-import Utilities.TaskNotFoundException;
 import WorkDiary.TaskType;
 
 import java.time.LocalDate;
@@ -78,11 +77,7 @@ public abstract class Task {
         return id;
     }
 
-    public static int getIdGenerator() {
-        return idGenerator;
-    }
-
-    public void takeData(TimeTypeTask type) {
+    public void takeData(TimeTypeTask type)  {
         title = ScannerUtility.askString("Заголовок");
         title = ScannerUtility.askString("Заголовок");
         description = ScannerUtility.askString("Описание задачи");
@@ -91,7 +86,14 @@ public abstract class Task {
             System.out.println(task);
         }
         taskType = TaskType.valueOf(ScannerUtility.askString("Тип задания"));
-        date = ScannerUtility.askDate("На какую дату назначить задачу? ");
+        try {
+            LocalDate date1 = ScannerUtility.askDate("На какую дату назначить задачу? ");
+            DiaryUtility.cheсkData(date1);
+            date = date1;
+        } catch (IncorrectDateException e) {
+            date = LocalDate.now();
+            System.out.println(e.getMessage());
+        }
         time = ScannerUtility.askTime("На какое время назначить задачу? ");
         timeTypeTask = type;
     }
@@ -105,7 +107,8 @@ public abstract class Task {
                 ", описание - " + description +
                 ", дата - " + date +
                 ", время - " + time +
-                ", периодичность выполнения - " + timeTypeTask;
+                ", периодичность выполнения - " + timeTypeTask +
+                ", номер задачи - " + getId();
     }
 
     @Override
