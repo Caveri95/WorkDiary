@@ -7,7 +7,7 @@ public class Monthly extends Task{
     }
 
     @Override
-    public void SetNextTime(LocalDate localDate) {
+    public void nextTimeRunTask(LocalDate localDate) {
         System.out.println("Следующая дата выполнения задачи: " + localDate.plusMonths(1) + "\n");
     }
 }

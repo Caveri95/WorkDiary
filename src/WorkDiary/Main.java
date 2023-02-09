@@ -14,7 +14,8 @@ public class Main {
         while (true) {
             diaryUtility.helper();
             if (ScannerUtility.scanner.hasNextInt()) {
-                int cmd = ScannerUtility.askInt("Выберите нужный пункт");
+                System.out.println("Выберите нужный пункт");
+                int cmd = ScannerUtility.askInt();
 
                 switch (cmd) {
                     case 0:

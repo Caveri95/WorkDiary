@@ -5,11 +5,10 @@ import java.time.LocalDate;
 public class Yearly extends Task{
     @Override
     public boolean appearsIn(LocalDate inputDate, LocalDate taskDate) {
-        return inputDate.getDayOfMonth() == taskDate.getDayOfMonth() &&
-                inputDate.getMonth() == taskDate.getMonth();
+        return inputDate.getDayOfYear() == taskDate.getDayOfYear();
     }
     @Override
-    public void SetNextTime(LocalDate localDate) {
+    public void nextTimeRunTask(LocalDate localDate) {
         System.out.println("Следующая дата выполнения задачи: " + localDate.plusYears(1) + "\n");
     }
 }

@@ -9,7 +9,7 @@ public class OneTime extends Task{
     }
 
     @Override
-    public void SetNextTime(LocalDate localDate) {
+    public void nextTimeRunTask(LocalDate localDate) {
         System.out.println("Задача активна только один раз");
     }
 }

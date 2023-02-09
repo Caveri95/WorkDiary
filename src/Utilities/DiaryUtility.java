@@ -11,55 +11,59 @@ import static Utilities.ScannerUtility.DATE_FORMAT;
 
 public class DiaryUtility {
 
-    HashMap<Integer, Task> tasks = new HashMap<>();
-    ArrayList<Task> deleteTasks = new ArrayList<>();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    private final ArrayList<Task> deleteTasks = new ArrayList<>();
 
     public void createTask(){
-        int a = ScannerUtility.askInt("Выберите периодичность выполнения задачи\n 1 - на один раз\n " +
+        System.out.println("Выберите периодичность выполнения задачи\n 1 - на один раз\n " +
                 "2 - ежедневная\n 3 - еженедельная\n 4 - ежемесячная\n 5 - ежегодная");
-        switch (a) {
-            case 1:
-                TimeTypeTask type1 = TimeTypeTask.ONETIME;
-                var task1 = type1.newTask();
-                task1.takeData(type1);
-                tasks.put(task1.getId(), task1);
-                System.out.println("Была создана задача: " + task1 + "\n");
-                break;
-            case 2:
-                TimeTypeTask type2 = TimeTypeTask.DAILY;
-                var task2 = type2.newTask();
-                task2.takeData(type2);
-                tasks.put(task2.getId(), task2);
-                System.out.println("Была создана задача: " + task2 + "\n");
-                break;
-            case 3:
-                TimeTypeTask type3 = TimeTypeTask.WEEKLY;
-                var task3 = type3.newTask();
-                task3.takeData(type3);
-                tasks.put(task3.getId(), task3);
-                System.out.println("Была создана задача: " + task3 + "\n");
-                break;
-            case 4:
-                TimeTypeTask type4 = TimeTypeTask.MONTHLY;
-                var task4 = type4.newTask();
-                task4.takeData(type4);
-                tasks.put(task4.getId(), task4);
-                System.out.println("Была создана задача: " + task4 + "\n");
-                break;
-            case 5:
-                TimeTypeTask type5 = TimeTypeTask.YEARLY;
-                var task5 = type5.newTask();
-                task5.takeData(type5);
-                tasks.put(task5.getId(), task5);
-                System.out.println("Была создана задача: " + task5 + "\n");
-                break;
-            default:
-                System.out.println("Нет задачи такого типа!");
+        if (ScannerUtility.scanner.hasNextInt()) {
+            int a = ScannerUtility.scanner.nextInt();
+            switch (a) {
+                case 1:
+                    TimeTypeTask type1 = TimeTypeTask.ONETIME;
+                    var task1 = type1.newTask();
+                    task1.takeData(type1);
+                    tasks.put(task1.getId(), task1);
+                    System.out.println("Была создана задача: " + task1 + "\n");
+                    break;
+                case 2:
+                    TimeTypeTask type2 = TimeTypeTask.DAILY;
+                    var task2 = type2.newTask();
+                    task2.takeData(type2);
+                    tasks.put(task2.getId(), task2);
+                    System.out.println("Была создана задача: " + task2 + "\n");
+                    break;
+                case 3:
+                    TimeTypeTask type3 = TimeTypeTask.WEEKLY;
+                    var task3 = type3.newTask();
+                    task3.takeData(type3);
+                    tasks.put(task3.getId(), task3);
+                    System.out.println("Была создана задача: " + task3 + "\n");
+                    break;
+                case 4:
+                    TimeTypeTask type4 = TimeTypeTask.MONTHLY;
+                    var task4 = type4.newTask();
+                    task4.takeData(type4);
+                    tasks.put(task4.getId(), task4);
+                    System.out.println("Была создана задача: " + task4 + "\n");
+                    break;
+                case 5:
+                    TimeTypeTask type5 = TimeTypeTask.YEARLY;
+                    var task5 = type5.newTask();
+                    task5.takeData(type5);
+                    tasks.put(task5.getId(), task5);
+                    System.out.println("Была создана задача: " + task5 + "\n");
+                    break;
+                default:
+                    System.out.println("Нет задачи такого типа!");
+            }
         }
     }
 
     public void tasksList() {
-        int a = ScannerUtility.askInt("Какие задачи хотите посмотреть?\n 1 - все задачи\n 2 - рабочие задачи\n 3 - личные задачи\n 4 - удаленные задачи");
+        System.out.println("Какие задачи хотите посмотреть?\n 1 - все задачи\n 2 - рабочие задачи\n 3 - личные задачи\n 4 - удаленные задачи");
+        int a = ScannerUtility.askInt();
         switch (a) {
             case 1:
                 if (tasks.size() == 0) {
@@ -123,7 +127,8 @@ public class DiaryUtility {
 
     public void deleteTask(){
         try {
-            int id = ScannerUtility.askInt("Введите номер задачи, которую нужно удалить");
+            System.out.println("Введите номер задачи, которую нужно удалить");
+            int id = ScannerUtility.askInt();
             checkTaskId(id);
             Task task = tasks.get(id);
             deleteTasks.add(task);
@@ -147,10 +152,11 @@ public class DiaryUtility {
 
     public void getNextTimeRun() throws TaskNotFoundException {
         try {
-            int id = ScannerUtility.askInt("Введите номер задачи, чтобы посмотреть следующее ее выполнение");
+            System.out.println("Введите номер задачи, чтобы посмотреть следующее ее выполнение");
+            int id = ScannerUtility.askInt();
             checkTaskId(id);
             Task task = tasks.get(id);
-            task.SetNextTime(task.getDate());
+            task.nextTimeRunTask(task.getDate());
         } catch (TaskNotFoundException e) {
             System.out.println(e.getMessage());;
         }

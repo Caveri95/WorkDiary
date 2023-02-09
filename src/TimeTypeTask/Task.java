@@ -12,13 +12,13 @@ import java.util.Objects;
 
 public abstract class Task {
 
-    String title;
-    TaskType taskType;
-    String description;
-    LocalDate date;
-    LocalTime time;
-    TimeTypeTask timeTypeTask;
-    LocalDateTime dateTime;
+     private String title;
+    private TaskType taskType;
+    private String description;
+    private LocalDate date;
+    private LocalTime time;
+    private TimeTypeTask timeTypeTask;
+
 
     private int id;
     private static int idGenerator = 1;
@@ -40,9 +40,9 @@ public abstract class Task {
         return timeTypeTask;
     }
 
-    public LocalDateTime getDateTime() {
+    /*public LocalDateTime getDateTime() {
         return dateTime;
-    }
+    }*/
     public TaskType getTaskType() {
         return taskType;
     }
@@ -78,27 +78,30 @@ public abstract class Task {
     }
 
     public void takeData(TimeTypeTask type)  {
-        title = ScannerUtility.askString("Заголовок");
-        title = ScannerUtility.askString("Заголовок");
-        description = ScannerUtility.askString("Описание задачи");
+        System.out.println("Заголовок");
+        title = ScannerUtility.scanner.next();
+        System.out.println("Описание задачи");
+        description = ScannerUtility.scanner.next();
         System.out.println("Выберите тип задания: ");
         for (TaskType task : TaskType.values()) {
             System.out.println(task);
         }
-        taskType = TaskType.valueOf(ScannerUtility.askString("Тип задания"));
+        taskType = TaskType.valueOf(ScannerUtility.scanner.next());
         try {
-            LocalDate date1 = ScannerUtility.askDate("На какую дату назначить задачу? ");
+            System.out.println("На какую дату назначить задачу? Формат ввода даты: " + ScannerUtility.DATE_FORMAT);
+            LocalDate date1 = ScannerUtility.askDate();
             DiaryUtility.cheсkData(date1);
             date = date1;
         } catch (IncorrectDateException e) {
             date = LocalDate.now();
             System.out.println(e.getMessage());
         }
-        time = ScannerUtility.askTime("На какое время назначить задачу? ");
+        System.out.println("На какое время назначить задачу? Формат ввода времени: " + ScannerUtility.TIME_FORMAT);
+        time = ScannerUtility.askTime();
         timeTypeTask = type;
     }
     public abstract boolean appearsIn(LocalDate inputDate, LocalDate taskDate);
-    public abstract void SetNextTime(LocalDate localDate);
+    public abstract void nextTimeRunTask(LocalDate localDate);
 
     @Override
     public String toString() {

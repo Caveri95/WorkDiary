@@ -22,7 +22,7 @@ public enum TimeTypeTask {
     YEARLY{
         @Override
         public Task newTask() {
-            return new  Daily();
+            return new Yearly();
         }
     },
     ONETIME{
