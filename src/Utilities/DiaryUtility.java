@@ -156,7 +156,7 @@ public class DiaryUtility {
             int id = ScannerUtility.askInt();
             checkTaskId(id);
             Task task = tasks.get(id);
-            task.nextTimeRunTask(task.getDate());
+            task.nextTimeRunTask();
         } catch (TaskNotFoundException e) {
             System.out.println(e.getMessage());;
         }

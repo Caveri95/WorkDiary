@@ -7,7 +7,8 @@ public class Weekly extends Task {
     }
 
     @Override
-    public void nextTimeRunTask(LocalDate localDate) {
+    public void nextTimeRunTask() {
+        LocalDate localDate = getDate();
         System.out.println("Следующая дата выполнения задачи: " + localDate.plusWeeks(1) + "\n");
     }
 }

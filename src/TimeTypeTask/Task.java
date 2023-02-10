@@ -101,7 +101,7 @@ public abstract class Task {
         timeTypeTask = type;
     }
     public abstract boolean appearsIn(LocalDate inputDate, LocalDate taskDate);
-    public abstract void nextTimeRunTask(LocalDate localDate);
+    public abstract void nextTimeRunTask();
 
     @Override
     public String toString() {

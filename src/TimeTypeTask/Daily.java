@@ -9,7 +9,7 @@ public class Daily extends Task{
     }
 
     @Override
-    public void nextTimeRunTask(LocalDate localDate) {
-        System.out.println("Следующая дата выполнения задачи: " + localDate.plusDays(1) + "\n");
+    public void nextTimeRunTask() {
+        //System.out.println("Следующая дата выполнения задачи: " + localDate.plusDays(1) + "\n");
     }
 }
