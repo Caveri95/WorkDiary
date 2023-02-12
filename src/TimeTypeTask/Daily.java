@@ -1,6 +1,7 @@
 package TimeTypeTask;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Daily extends Task{
     @Override
@@ -10,6 +11,6 @@ public class Daily extends Task{
 
     @Override
     public void nextTimeRunTask() {
-        //System.out.println("Следующая дата выполнения задачи: " + localDate.plusDays(1) + "\n");
+        System.out.println("Следующая дата выполнения задачи: " + LocalDate.now().plusDays(1) + "\n");
     }
 }
