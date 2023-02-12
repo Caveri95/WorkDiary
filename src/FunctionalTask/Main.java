@@ -52,9 +52,9 @@ public class Main {
             System.out.println("Найдено совпадение " + text.substring(start,end) + " с "+ start + " по " + (end-1) + " позицию");
         }
 
-        String sentence = "Ёлочка вам нравится, ёлочка?";
 
-        ArrayList<String> words = new ArrayList<>();
+
+        /*ArrayList<String> words = new ArrayList<>();
         for (String s : sentence.split(" ")) {
             words.add(s.replaceAll("[^a-zA-Zа-яёА-ЯЁ]", "").toLowerCase());
         }
@@ -70,12 +70,12 @@ public class Main {
             } else {
                 distinct.add(i);
             }
-        }
-        repetitive.stream().forEach(System.out::println);
+        }*/
+        /*repetitive.stream().forEach(System.out::println);
         System.out.println(repetitive.size());
         System.out.println("______________");
         distinct.stream().forEach(System.out::println);
-        //System.out.println(repetitive.size());
+        //System.out.println(repetitive.size());*/
 
 
         /*System.out.println(matcher.replaceFirst("Ира"));
